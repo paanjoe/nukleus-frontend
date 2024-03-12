@@ -5,11 +5,7 @@ import { redirect } from "next/navigation";
 import { useState } from "react";
 import Spinner from "./Spinner";
 
-export default async function LoginMain({
-  searchParams,
-}: {
-  searchParams: { message: string };
-}) {
+export default async function LoginMain() {
   const supabase = createClient();
 
   const signInAdmin = async (formData: FormData) => {
