@@ -1,13 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
-import Spinner from "./Spinner";
-import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAdd,
   faCaretDown,
   faCaretUp,
 } from "@fortawesome/free-solid-svg-icons";
+
+import Spinner from "./Spinner";
+import Link from "next/link";
 
 const Inventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
@@ -18,14 +19,12 @@ const Inventory = () => {
   const [sortDirection, setSortDirection] = useState("asc");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  // State to manage confirmation dialog visibility
   const [showConfirmation, setShowConfirmation] = useState(false);
-  // State to store the ID of the inventory to be deleted
   const [inventoryToDelete, setInventoryToDelete] = useState("");
-
   const apiBaseUrl =
     process.env.API_BASE_URL || "https://nukleus-backend.onrender.com/api";
 
+  // Get Inventory Data..
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -48,10 +47,12 @@ const Inventory = () => {
     }
   };
 
+  // Apply the fetch data function when the component mounts
   useEffect(() => {
     fetchData();
   }, [sortBy, sortDirection, page, pageSize]);
 
+  // Handle sort parameters
   const handleSort = (column) => {
     if (sortBy === column) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -59,11 +60,6 @@ const Inventory = () => {
       setSortBy(column);
       setSortDirection("asc");
     }
-  };
-
-  const handleEdit = (productId) => {
-    // Implement edit functionality here
-    console.log("Edit product with ID:", productId);
   };
 
   const handleSearch = (event) => {
@@ -76,7 +72,6 @@ const Inventory = () => {
 
   const totalPages = Math.ceil(totalInventory / pageSize);
 
-  // Function to handle deletion confirmation
   const confirmDelete = async () => {
     try {
       const response = await fetch(
@@ -88,21 +83,15 @@ const Inventory = () => {
       if (!response.ok) {
         throw new Error("Failed to delete inventory");
       }
-      // Reload data after successful deletion
       fetchData();
-      // Close the confirmation dialog
       setShowConfirmation(false);
     } catch (error) {
       console.error("Error deleting inventory:", error);
-      // Handle error
     }
   };
 
-  // Function to handle opening confirmation dialog
   const handleDeleteConfirmation = (productId) => {
-    // Set the ID of the inventory to be deleted
     setInventoryToDelete(productId);
-    // Show the confirmation dialog
     setShowConfirmation(true);
   };
 
@@ -112,12 +101,13 @@ const Inventory = () => {
         <Spinner />
       ) : (
         <>
-          <button
+          <Link
+            href={"/inventory/add"}
             type="button"
-            className="w-full mb-6 focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+            className="text-center w-full mb-6 focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
           >
             <FontAwesomeIcon icon={faAdd} /> &nbsp; Add Inventory
-          </button>
+          </Link>
 
           <p className="mb-4 text-lg font-semibold">
             Total Inventory: {totalInventory}
@@ -222,12 +212,12 @@ const Inventory = () => {
                       {item.product.product_category.CategoryName}
                     </td>
                     <td className="flex items-center px-6 py-4">
-                      <button
-                        onClick={() => handleEdit(item.Id)}
+                      <Link
+                        href={`/inventory/edit/${item.Id}`}
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
                         Edit
-                      </button>
+                      </Link>
                       <button
                         onClick={() => handleDeleteConfirmation(item.Id)}
                         className="font-medium text-red-600 dark:text-red-500 hover:underline ms-3"
