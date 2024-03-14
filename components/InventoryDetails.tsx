@@ -2,9 +2,10 @@
 "use client";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+import Link from "next/link";
 import Spinner from "./Spinner";
 
 const InventoryDetails = ({ Id }) => {

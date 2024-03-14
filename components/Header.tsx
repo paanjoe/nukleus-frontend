@@ -1,7 +1,4 @@
-import Login from "@/app/login/page";
 import LoginMain from "./LoginMain";
-import NextLogo from "./NextLogo";
-import SupabaseLogo from "./SupabaseLogo";
 
 export default function Header() {
   return (

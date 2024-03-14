@@ -1,8 +1,9 @@
-import DeployButton from "@/components/NavLogo";
-import AuthButton from "@/components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import Inventory from "@/components/tutorial/Inventory";
+
+import DeployButton from "@/components/NavLogo";
+import AuthButton from "@/components/AuthButton";
+import Inventory from "@/components/Inventory";
 import UserManagementButton from "@/components/UserManagementButton";
 import Footer from "@/components/Footer";
 

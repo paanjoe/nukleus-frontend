@@ -1,10 +1,6 @@
-import DeployButton from "@/components/NavLogo";
-import AuthButton from "@/components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
-import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
-import Header from "@/components/Header";
 import { redirect } from "next/navigation";
-import Inventory from "@/components/tutorial/Inventory";
+
 import NavLogo from "@/components/NavLogo";
 import Link from "next/link";
 

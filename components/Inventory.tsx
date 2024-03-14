@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Spinner from "../Spinner";
+import Spinner from "./Spinner";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+
 import DeployButton from "@/components/NavLogo";
 import UserManagementButton from "@/components/UserManagementButton";
 import AuthButton from "@/components/AuthButton";

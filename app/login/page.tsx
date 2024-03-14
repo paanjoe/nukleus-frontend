@@ -1,8 +1,9 @@
-import Link from "next/link";
 import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
+
+import Link from "next/link";
 
 export default function Login({
   searchParams,

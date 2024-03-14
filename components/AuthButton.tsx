@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function AuthButton() {
@@ -27,12 +26,6 @@ export default async function AuthButton() {
       </form>
     </div>
   ) : (
-    // <Link
-    //   href="/login"
-    //   className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
-    // >
-    //   Login
-    // </Link>
     <></>
   );
 }

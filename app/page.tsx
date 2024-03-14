@@ -1,8 +1,9 @@
 import AuthButton from "../components/AuthButton";
-import { createClient } from "@/utils/supabase/server";
 import Header from "@/components/Header";
 import NavLogo from "../components/NavLogo";
 import UserManagementButton from "@/components/UserManagementButton";
+
+import { createClient } from "@/utils/supabase/server";
 
 export default async function Index() {
   const canInitSupabaseClient = () => {
