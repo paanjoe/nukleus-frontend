@@ -15,6 +15,12 @@ export default function Header() {
       <p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center">
         Let's begin by choosing which account you want to login with.
       </p>
+      <p>
+        <span className="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+          The backend is on free-tier plan, so it might take up to 50 seconds to
+          start the back-end service for the first time.
+        </span>
+      </p>
       <LoginMain />
     </div>
   );

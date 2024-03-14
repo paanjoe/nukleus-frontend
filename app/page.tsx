@@ -1,15 +1,11 @@
 import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
-import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
-import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
 import Header from "@/components/Header";
 import NavLogo from "../components/NavLogo";
 import UserManagementButton from "@/components/UserManagementButton";
 
 export default async function Index() {
   const canInitSupabaseClient = () => {
-    // This function is just for the interactive tutorial.
-    // Feel free to remove it once you have Supabase connected.
     try {
       createClient();
       return true;
@@ -34,13 +30,9 @@ export default async function Index() {
           )}
         </div>
       </nav>
-
       <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
         <Header />
       </div>
-      <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
-        <p>I don't know what to put here lol.</p>
-      </footer>
     </div>
   );
 }
