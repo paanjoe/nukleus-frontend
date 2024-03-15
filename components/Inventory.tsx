@@ -10,7 +10,7 @@ import {
 import Spinner from "./Spinner";
 import Link from "next/link";
 
-const Inventory = () => {
+const Inventory = ({ jwt }) => {
   const [inventoryData, setInventoryData] = useState([]);
   const [totalInventory, setTotalInventory] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -31,8 +31,14 @@ const Inventory = () => {
       const response = await fetch(
         `${apiBaseUrl}/inventory?sortBy=${sortBy}&sortDirection=${sortDirection}&take=${pageSize}&skip=${
           (page - 1) * pageSize
-        }`
+        }`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
       );
+
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }

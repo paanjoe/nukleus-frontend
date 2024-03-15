@@ -17,6 +17,8 @@ export default async function Page({ params }: { params: { Id: string } }) {
     return redirect("/");
   }
 
+  const { data, error } = await supabase.auth.getSession();
+
   return (
     <>
       <div className="flex-1 w-full flex flex-col gap-20 items-center">
@@ -33,7 +35,7 @@ export default async function Page({ params }: { params: { Id: string } }) {
         <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
           <main className="flex-1 flex flex-col">
             {/* Lorem Ipsum Dolor Sit amet */}
-            <InventoryDetails Id={params.Id} />
+            <InventoryDetails Id={params.Id} jwt={data.session.access_token} />
           </main>
         </div>
         <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">

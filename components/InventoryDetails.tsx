@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Spinner from "./Spinner";
 
-const InventoryDetails = ({ Id }) => {
+const InventoryDetails = ({ Id, jwt }) => {
   const [loading, setLoading] = useState(true);
   const [inventoryData, setInventoryData] = useState(undefined);
   // State to manage confirmation dialog visibility
@@ -22,7 +22,9 @@ const InventoryDetails = ({ Id }) => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${apiBaseUrl}/inventory/${Id}`);
+      const response = await fetch(`${apiBaseUrl}/inventory/${Id}`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      });
       // Handle response data
       const data = await response.json();
       setInventoryData(data);
@@ -46,6 +48,7 @@ const InventoryDetails = ({ Id }) => {
         `${apiBaseUrl}/inventory/delete-inventory/${inventoryToDelete}`,
         {
           method: "DELETE",
+          headers: { Authorization: `Bearer ${jwt}` },
         }
       );
       if (!response.ok) {
@@ -192,12 +195,13 @@ const InventoryDetails = ({ Id }) => {
               </div>
               <br />
               <div className="inline-flex rounded-md shadow-sm" role="group">
-                <button
+                <Link
                   type="button"
+                  href={`/inventory/edit/${inventoryData?.Id}`}
                   className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-blue-800 dark:border-blue-700 dark:text-white dark:hover:text-white dark:hover:bg-blue-700 dark:focus:ring-blue-500 dark:focus:text-white"
                 >
                   Edit Inventory
-                </button>
+                </Link>
 
                 <button
                   type="button"

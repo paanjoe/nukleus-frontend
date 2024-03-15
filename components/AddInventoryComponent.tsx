@@ -3,13 +3,18 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import Spinner from "./Spinner";
 
-export default function AddInventoryComponent() {
+export default function AddInventoryComponent({ jwt }) {
   const [products, setProducts] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [failureMessage, setFailureMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const apiBaseUrl =
+    process.env.API_BASE_URL || "https://nukleus-backend.onrender.com/api";
+
   const [formData, setFormData] = useState({
     productId: "",
     entityUserId: "7a9b66f2-0859-4ff3-857c-80963d3b8443", // Default entityUserId
@@ -45,21 +50,19 @@ export default function AddInventoryComponent() {
 
     e.preventDefault();
     try {
-      const response = await fetch(
-        "https://nukleus-backend.onrender.com/api/inventory/add-inventory",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+      const response = await fetch(`${apiBaseUrl}/inventory/add-inventory`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+        body: JSON.stringify({
+          inventoryData: {
+            ...formData,
+            QuantityAvailable: formData.QuantityAvailable, // Convert quantity to integer
           },
-          body: JSON.stringify({
-            inventoryData: {
-              ...formData,
-              QuantityAvailable: formData.QuantityAvailable, // Convert quantity to integer
-            },
-          }),
-        }
-      );
+        }),
+      });
 
       if (response.ok) {
         // Handle success
@@ -85,13 +88,26 @@ export default function AddInventoryComponent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch(
-          "https://nukleus-backend.onrender.com/api/product?sortBy=productName&sortDirection=asc&take=100"
+          `${apiBaseUrl}/product?sortBy=productName&sortDirection=asc&take=100`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
         );
+
         const data = await response.json();
+
         setProducts(data.data);
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -127,24 +143,6 @@ export default function AddInventoryComponent() {
 
   return (
     <>
-      {successMessage && (
-        <div
-          className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-          role="alert"
-        >
-          <span className="font-medium">{successMessage}</span>
-        </div>
-      )}
-
-      {failureMessage && (
-        <div
-          className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-          role="alert"
-        >
-          <span className="font-medium">{failureMessage}</span>
-        </div>
-      )}
-
       <div className="container mx-auto px-4 py-8">
         <Link
           type="button"
@@ -162,18 +160,24 @@ export default function AddInventoryComponent() {
           >
             Select list of Product
           </label>
-          <select
-            id="productId"
-            onChange={handleProductChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
-            <option value="">Select a product</option>
-            {products.map((product) => (
-              <option key={product.Id} value={product.Id}>
-                {product.ProductName}
-              </option>
-            ))}
-          </select>
+          {isLoading ? (
+            <>
+              <Spinner />
+            </>
+          ) : (
+            <select
+              id="productId"
+              onChange={handleProductChange}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="">Select a product</option>
+              {products.map((product) => (
+                <option key={product.Id} value={product.Id}>
+                  {product.ProductName}
+                </option>
+              ))}
+            </select>
+          )}
           <br />
           <br />
 
@@ -308,6 +312,23 @@ export default function AddInventoryComponent() {
           </button>
         </form>
       </div>
+      {successMessage && (
+        <div
+          className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+          role="alert"
+        >
+          <span className="font-medium">{successMessage}</span>
+        </div>
+      )}
+
+      {failureMessage && (
+        <div
+          className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+          role="alert"
+        >
+          <span className="font-medium">{failureMessage}</span>
+        </div>
+      )}
     </>
   );
 }
